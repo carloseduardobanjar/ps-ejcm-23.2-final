@@ -9,6 +9,12 @@ async function create(req, res){
 		const salt = hashAndSalt.salt;
 		const hash = hashAndSalt.hash;
 
+        const html = `
+            <h2>Ficamos muito felizes com o seu cadastro!!</h2></br>
+            <p>Esperamos que tenha uma boa experiência no BlockByte!</p>
+            <img src="cid:logo"> 
+        `
+
         const usuario = await Usuario.create({
             nome: req.body.nome,
 			dataNascimento: req.body.dataNascimento,
@@ -33,7 +39,12 @@ async function create(req, res){
             to: req.body.email,
             subject: `🎊🎊🎊 Seja bem-vindo, ${req.body.nome} 🎊🎊🎊`,
             text: "Ficamos muito felizes com o seu cadastro!!! \n\nEsperamos que tenha uma boa experiência no BlockByte!",
-            html: "<h2>Ficamos muito felizes com o seu cadastro!!</h2></br><p>Esperamos que tenha uma boa experiência no BlockByte!</p>"
+            html: html,
+            attachments: [{
+                filename: 'Logo.jpg',
+                path: 'Logo.jpg',
+                cid: 'logo'
+            }]
         };
 
         transport.sendMail(message)
